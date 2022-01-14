@@ -30,14 +30,17 @@
             android:name="arg_division"
             app:argType="com.example.android.politicalpreparedness.network.models.Division" />
     </fragment>
+
     <fragment
         android:id="@+id/electionsFragment"
         android:name="com.example.android.politicalpreparedness.election.ElectionsFragment"
-        android:label="fragment_elections"/>
+        android:label="fragment_elections"
+        tools:layout="@layout/fragment_election" />
+    
     <fragment
         android:id="@+id/representativeFragment"
         android:name="com.example.android.politicalpreparedness.representative.DetailFragment"
         android:label="fragment_representative"
-        tools:layout="@layout/fragment_representative"/>
+        tools:layout="@layout/fragment_representative" />
 
 </navigation>

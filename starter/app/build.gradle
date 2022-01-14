@@ -97,7 +97,7 @@ dependencies {
     // Glide
     //TODO: Add Glide Implementation
 
-    //Room
+    // Room
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.test.ext:junit-ktx:1.1.3'
     implementation 'androidx.test:runner:1.4.0'
@@ -107,7 +107,7 @@ dependencies {
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"
 
-    //Coroutines Dependencies
+    // Coroutines Dependencies
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 
     // Unit tests
@@ -119,7 +119,6 @@ dependencies {
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_kotlin_coroutines"
     androidTestImplementation "org.mockito:mockito-core:$version_mockito"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$version_dexMaker"
-    androidTestImplementation('org.koin:koin-test:2.0.1') { exclude group: 'org.mockito' }
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$version_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$version_espresso"

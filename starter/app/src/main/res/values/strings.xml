@@ -3,6 +3,7 @@
     <string name="app_name">Political Preparedness</string>
     <string name="button_label_find_rep">Find My Representatives</string>
     <string name="button_label_upcoming_elections">Upcoming Elections</string>
+    <string name="header_label_upcoming_elections">Upcoming Elections</string>
 
     <!-- TODO: Add necessary string values -->
 
