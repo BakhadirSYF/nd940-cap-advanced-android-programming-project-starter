@@ -39,4 +39,21 @@ class LaunchFragmentTest {
         verify(navController).navigate(LaunchFragmentDirections.actionLaunchFragmentToElectionsFragment())
     }
 
+    @Test
+    fun onFindRepsButtonClick_navigateToRepresentativeFragment() = runBlockingTest {
+        // GIVEN - on LaunchFragment screen
+        val scenario = launchFragmentInContainer<LaunchFragment>(null, R.style.AppTheme)
+        val navController = Mockito.mock(NavController::class.java)
+
+        scenario.onFragment {
+            Navigation.setViewNavController(it.view!!, navController)
+        }
+
+        // WHEN - "Find My Representatives" button clicked
+        onView(withId(R.id.findRepButton)).perform(click())
+
+        // THEN - verify user navigated to representative details fragment
+        verify(navController).navigate(LaunchFragmentDirections.actionLaunchFragmentToRepresentativeFragment())
+    }
+
 }

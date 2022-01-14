@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_launchFragment_to_electionsFragment"
             app:destination="@id/electionsFragment" />
+        <action
+            android:id="@+id/action_launchFragment_to_representativeFragment"
+            app:destination="@id/representativeFragment" />
     </fragment>
 
     <fragment
