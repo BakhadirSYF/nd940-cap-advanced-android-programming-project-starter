@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.network.models.Election
@@ -66,10 +67,27 @@ class ElectionsFragment : Fragment() {
         // Sets the adapter of the electionsList RecyclerView with clickHandler lambda that
         // tells the viewModel when list item is clicked
         viewModelAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
-            viewModel.displayElectionDetails(it)
+            viewModel.displayVoterInfo(it)
         })
 
         binding.upcomingElectionsRecyclerView.adapter = viewModelAdapter
+
+        // Observe the navigateToSelectedElection LiveData and navigate when it isn't null.
+        // After navigating, call displayElectionDetailsComplete() so that the ViewModel is ready
+        // for another navigation event.
+        viewModel.navigateToVoterInfo.observe(viewLifecycleOwner, Observer {
+            if (null != it) {
+                // Must find the NavController from the Fragment
+                this.findNavController().navigate(
+                    ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
+                        it.id,
+                        it.division
+                    )
+                )
+                // Tell the ViewModel we've made the navigate call to prevent multiple navigation
+                viewModel.displayVoterInfoComplete()
+            }
+        })
 
         setHasOptionsMenu(true)
         return binding.root

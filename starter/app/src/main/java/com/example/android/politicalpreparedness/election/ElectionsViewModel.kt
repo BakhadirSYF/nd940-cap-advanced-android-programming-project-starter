@@ -20,6 +20,14 @@ class ElectionsViewModel : ViewModel() {
     val electionsDisplayed: LiveData<Boolean>
         get() = _electionsDisplayed
 
+    // The internal MutableLiveData to store election data and to handle navigation to the
+    // selected election list item
+    private val _navigateToVoterInfo = MutableLiveData<Election>()
+
+    // The external immutable LiveData for the navigation item
+    val navigateToVoterInfo: LiveData<Election>
+        get() = _navigateToVoterInfo
+
     fun loadUpcomingElections() {
         val dataList = mutableListOf<Election>()
 
@@ -56,11 +64,23 @@ class ElectionsViewModel : ViewModel() {
      * After elections list displayed to the user, set [_electionsDisplayed] to true
      */
     fun displayAsteroidListComplete() {
+        // TODO: need to use for ProgressBar
         _electionsDisplayed.value = true
     }
 
-    fun displayElectionDetails(it: Election) {
-        TODO("Not yet implemented")
+    /**
+     * When the Election list item clicked, set the [_navigateToVoterInfo] [MutableLiveData]
+     * @param election The [Election] that was clicked on.
+     */
+    fun displayVoterInfo(election: Election) {
+        _navigateToVoterInfo.value = election
+    }
+
+    /**
+     * After the navigation has taken place, make sure navigateToVoterInfo is set to null
+     */
+    fun displayVoterInfoComplete() {
+        _navigateToVoterInfo.value = null
     }
 
     //TODO: Create live data val for upcoming elections
