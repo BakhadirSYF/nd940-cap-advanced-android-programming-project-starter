@@ -13,5 +13,4 @@ class ElectionsViewModelFactory : ViewModelProvider.Factory {
         throw IllegalArgumentException("Unable to construct viewmodel")
     }
 
-
 }
