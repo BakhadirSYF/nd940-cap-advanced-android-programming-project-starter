@@ -27,6 +27,10 @@ android {
         }
     }
 
+    buildTypes.each {
+        it.buildConfigField 'String', 'GOOGLE_CIVICS_API_KEY', GOOGLE_CIVICS_API_KEY
+    }
+
     testOptions.unitTests {
         includeAndroidResources = true
         returnDefaultValues = true
