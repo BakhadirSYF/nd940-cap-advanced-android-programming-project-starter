@@ -30,7 +30,6 @@ class ElectionsFragment : Fragment() {
         ).get(ElectionsViewModel::class.java)
     }
 
-
     /**
      * Upcoming Elections RecyclerView adapter.
      */
