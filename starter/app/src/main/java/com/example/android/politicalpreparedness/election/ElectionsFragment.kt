@@ -34,14 +34,27 @@ class ElectionsFragment : Fragment() {
     /**
      * Upcoming Elections RecyclerView adapter.
      */
-    private var viewModelAdapter: ElectionListAdapter? = null
+    private var upcomingElectionsAdapter: ElectionListAdapter? = null
+
+    /**
+     * Saved Elections RecyclerView adapter.
+     */
+    private var savedElectionsAdapter: ElectionListAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.electionsList.observe(viewLifecycleOwner, Observer<List<Election>> { elections ->
+        viewModel.upcomingElectionsList.observe(viewLifecycleOwner, Observer<List<Election>> { elections ->
             elections?.apply {
-                viewModelAdapter?.elections = elections
-                viewModel.displayAsteroidListComplete()
+                upcomingElectionsAdapter?.elections = elections
+                viewModel.displayElectionListComplete()
+            }
+        })
+
+        viewModel.savedElectionsList.observe(viewLifecycleOwner, Observer<List<Election>> { elections ->
+            elections?.apply {
+                savedElectionsAdapter?.elections = elections
+                // TODO: might need extra boolean to separate upcoming and saved list loading
+                viewModel.displayElectionListComplete()
             }
         })
     }
@@ -66,11 +79,16 @@ class ElectionsFragment : Fragment() {
 
         // Sets the adapter of the electionsList RecyclerView with clickHandler lambda that
         // tells the viewModel when list item is clicked
-        viewModelAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
+        upcomingElectionsAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
             viewModel.displayVoterInfo(it)
         })
 
-        binding.upcomingElectionsRecyclerView.adapter = viewModelAdapter
+        savedElectionsAdapter = ElectionListAdapter(ElectionListAdapter.ElectionListener {
+            viewModel.displayVoterInfo(it)
+        })
+
+        binding.upcomingElectionsRecyclerView.adapter = upcomingElectionsAdapter
+        binding.savedElectionsRecyclerView.adapter = savedElectionsAdapter
 
         // Observe the navigateToSelectedElection LiveData and navigate when it isn't null.
         // After navigating, call displayElectionDetailsComplete() so that the ViewModel is ready
@@ -105,5 +123,6 @@ class ElectionsFragment : Fragment() {
         super.onResume()
         // Load the reminders list on the ui
         viewModel.loadUpcomingElections()
+        viewModel.loadSavedElections()
     }
 }

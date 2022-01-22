@@ -9,8 +9,20 @@ import java.util.*
 
 //TODO: Construct ViewModel and provide election datasource
 class ElectionsViewModel : ViewModel() {
-    // list that holds the reminder data to be displayed on the UI
-    val electionsList = MutableLiveData<List<Election>>()
+
+    // The internal MutableLiveData that holds the data to be displayed on the UI
+    private val _upcomingElectionsList = MutableLiveData<List<Election>>()
+
+    // The external immutable LiveData
+    val upcomingElectionsList: LiveData<List<Election>>
+        get() = _upcomingElectionsList
+
+    // The internal MutableLiveData that holds the data to be displayed on the UI
+    private val _savedElectionsList = MutableLiveData<List<Election>>()
+
+    // The external immutable LiveData
+    val savedElectionsList: LiveData<List<Election>>
+        get() = _savedElectionsList
 
     // The internal MutableLiveData to store boolean value that changes when list of elections
     // displayed to the user. Used for progress bar visibility
@@ -30,7 +42,6 @@ class ElectionsViewModel : ViewModel() {
 
     fun loadUpcomingElections() {
         val dataList = mutableListOf<Election>()
-
 
         dataList.add(Election(1, "VIP Test Election", Date(), Division("id1", "US", "Washington")))
         dataList.add(
@@ -57,13 +68,28 @@ class ElectionsViewModel : ViewModel() {
                 Division("id4", "US", "DC Columbia")
             )
         )
-        electionsList.value = dataList
+        _upcomingElectionsList.value = dataList
+    }
+
+    fun loadSavedElections() {
+        val dataList = mutableListOf<Election>()
+
+        dataList.add(
+            Election(
+                2,
+                "Wisconsin Presidential Primary Election",
+                Date(),
+                Division("id2", "US", "Wisconsin")
+            )
+        )
+
+        _savedElectionsList.value = dataList
     }
 
     /**
      * After elections list displayed to the user, set [_electionsDisplayed] to true
      */
-    fun displayAsteroidListComplete() {
+    fun displayElectionListComplete() {
         // TODO: need to use for ProgressBar
         _electionsDisplayed.value = true
     }
@@ -82,6 +108,8 @@ class ElectionsViewModel : ViewModel() {
     fun displayVoterInfoComplete() {
         _navigateToVoterInfo.value = null
     }
+
+
 
     //TODO: Create live data val for upcoming elections
 
