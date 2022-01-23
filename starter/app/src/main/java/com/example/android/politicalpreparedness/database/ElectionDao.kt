@@ -9,7 +9,8 @@ import com.example.android.politicalpreparedness.network.models.Election
 @Dao
 interface ElectionDao {
 
-    //TODO: Add insert query
+    @Insert
+    suspend fun insert(election: Election?)
 
     //TODO: Add select all election query
 

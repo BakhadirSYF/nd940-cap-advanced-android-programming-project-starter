@@ -6,16 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDao
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.models.*
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
-class VoterInfoViewModel(/*private val dataSource: ElectionDao*/private val electionId: Int,
-                                                                private val electionName: String
+class VoterInfoViewModel(
+    private val dataSource: ElectionDao, private val electionId: Int,
+    private val electionName: String
 ) : ViewModel() {
 
+
     private val TAG = "VoterInfoViewModel"
+    private var election: Election? = null
 
     // The internal MutableLiveData to store VoterInfoResponse
     private val _voterInfoResponse = MutableLiveData<VoterInfoResponse>()
@@ -32,7 +36,7 @@ class VoterInfoViewModel(/*private val dataSource: ElectionDao*/private val elec
     val voterInfoDisplayed: LiveData<Boolean>
         get() = _voterInfoDisplayed
 
-    private val electionsRepository = ElectionsRepository()
+    private val electionsRepository = ElectionsRepository(dataSource)
 
     /**
      * init{} is called immediately after view model is created.
@@ -41,13 +45,23 @@ class VoterInfoViewModel(/*private val dataSource: ElectionDao*/private val elec
         viewModelScope.launch {
             _voterInfoDisplayed.value = false
             try {
-                _voterInfoResponse.value =
-                    electionsRepository.getVoterInfo(electionId, electionName)
+
+                val voterInfoResponse = electionsRepository.getVoterInfo(electionId, electionName)
+                election = voterInfoResponse.election
+
+                _voterInfoResponse.value = voterInfoResponse
             } catch (e: Exception) {
                 Log.d(TAG, e.printStackTrace().toString())
             }
 
         }
+    }
+
+    fun saveElectionToDatabase() {
+        viewModelScope.launch {
+            electionsRepository.saveElection(election)
+        }
+
     }
 
 

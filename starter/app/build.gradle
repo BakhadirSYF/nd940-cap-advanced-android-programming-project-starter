@@ -108,6 +108,8 @@ dependencies {
     implementation 'androidx.test:runner:1.4.0'
     testImplementation 'junit:junit:4.12'
     kapt "androidx.room:room-compiler:$version_room"
+    // Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$version_room"
 
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"

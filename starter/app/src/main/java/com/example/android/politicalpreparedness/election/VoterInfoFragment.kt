@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.android.politicalpreparedness.database.ElectionDao
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 
 class VoterInfoFragment : Fragment() {
@@ -15,9 +16,12 @@ class VoterInfoFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentVoterInfoBinding
-    private lateinit var dataDao: ElectionDao
 
-    val args: VoterInfoFragmentArgs by navArgs()
+    private val args: VoterInfoFragmentArgs by navArgs()
+
+    private val dataSource: ElectionDao by lazy {
+        ElectionDatabase.getInstance(requireNotNull(this.activity).application).electionDao
+    }
 
     /**
      * Lazily initialize [VoterInfoViewModel].
@@ -25,7 +29,7 @@ class VoterInfoFragment : Fragment() {
     private val viewModel: VoterInfoViewModel by lazy {
         ViewModelProvider(
             this,
-            VoterInfoViewModelFactory(/*dataDao*/args.argElectionId, args.argElectionName)
+            VoterInfoViewModelFactory(dataSource, args.argElectionId, args.argElectionName)
         ).get(VoterInfoViewModel::class.java)
     }
 
@@ -42,6 +46,10 @@ class VoterInfoFragment : Fragment() {
 
         // Giving the binding access to the ElectionsViewModel
         binding.viewModel = viewModel
+
+        binding.followElectionButton.setOnClickListener {
+            viewModel.saveElectionToDatabase()
+        }
 
         return binding.root
 
@@ -60,10 +68,6 @@ class VoterInfoFragment : Fragment() {
         //TODO: Handle save button UI state
         //TODO: cont'd Handle save button clicks
 
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     //TODO: Create method to load URL intents

@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.android.politicalpreparedness.database.ElectionDao
+import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.network.models.Election
@@ -20,13 +22,17 @@ class ElectionsFragment : Fragment() {
 
     private lateinit var binding: FragmentElectionBinding
 
+    private val dataSource: ElectionDao by lazy {
+        ElectionDatabase.getInstance(requireNotNull(this.activity).application).electionDao
+    }
+
     /**
      * Lazily initialize [ElectionsViewModel].
      */
     private val viewModel: ElectionsViewModel by lazy {
         ViewModelProvider(
             this,
-            ElectionsViewModelFactory()
+            ElectionsViewModelFactory(dataSource)
         ).get(ElectionsViewModel::class.java)
     }
 
