@@ -42,20 +42,24 @@ class ElectionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.upcomingElectionsList.observe(viewLifecycleOwner, Observer<List<Election>> { elections ->
-            elections?.apply {
-                upcomingElectionsAdapter?.elections = elections
-                viewModel.displayElectionListComplete()
-            }
-        })
+        viewModel.upcomingElectionsList.observe(
+            viewLifecycleOwner,
+            Observer<List<Election>> { elections ->
+                elections?.apply {
+                    upcomingElectionsAdapter?.elections = elections
+                    viewModel.displayElectionListComplete()
+                }
+            })
 
-        viewModel.savedElectionsList.observe(viewLifecycleOwner, Observer<List<Election>> { elections ->
-            elections?.apply {
-                savedElectionsAdapter?.elections = elections
-                // TODO: might need extra boolean to separate upcoming and saved list loading
-                viewModel.displayElectionListComplete()
-            }
-        })
+        viewModel.savedElectionsList.observe(
+            viewLifecycleOwner,
+            Observer<List<Election>> { elections ->
+                elections?.apply {
+                    savedElectionsAdapter?.elections = elections
+                    // TODO: might need extra boolean to separate upcoming and saved list loading
+                    viewModel.displayElectionListComplete()
+                }
+            })
     }
 
     /**
@@ -120,8 +124,6 @@ class ElectionsFragment : Fragment() {
     //TODO: Refresh adapters when fragment loads
     override fun onResume() {
         super.onResume()
-        // Load the reminders list on the ui
-        viewModel.loadUpcomingElections()
         viewModel.loadSavedElections()
     }
 }

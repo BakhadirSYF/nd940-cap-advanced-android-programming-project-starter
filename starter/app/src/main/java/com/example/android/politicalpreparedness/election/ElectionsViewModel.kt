@@ -1,14 +1,18 @@
 package com.example.android.politicalpreparedness.election
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.repository.ElectionsRepository
+import kotlinx.coroutines.launch
 import java.util.*
 
-//TODO: Construct ViewModel and provide election datasource
 class ElectionsViewModel : ViewModel() {
+    private val TAG = "ElectionsViewModel"
 
     // The internal MutableLiveData that holds the data to be displayed on the UI
     private val _upcomingElectionsList = MutableLiveData<List<Election>>()
@@ -40,35 +44,21 @@ class ElectionsViewModel : ViewModel() {
     val navigateToVoterInfo: LiveData<Election>
         get() = _navigateToVoterInfo
 
-    fun loadUpcomingElections() {
-        val dataList = mutableListOf<Election>()
+    private val electionsRepository = ElectionsRepository()
 
-        dataList.add(Election(1, "VIP Test Election", Date(), Division("id1", "US", "Washington")))
-        dataList.add(
-            Election(
-                2,
-                "Wisconsin Presidential Primary Election",
-                Date(),
-                Division("id2", "US", "Wisconsin")
-            )
-        )
-        dataList.add(
-            Election(
-                3,
-                "Michigan Consolidated Election",
-                Date(),
-                Division("id3", "US", "Michigan")
-            )
-        )
-        dataList.add(
-            Election(
-                4,
-                "DC State Primary Election",
-                Date(),
-                Division("id4", "US", "DC Columbia")
-            )
-        )
-        _upcomingElectionsList.value = dataList
+    /**
+     * init{} is called immediately after view model is created.
+     */
+    init {
+        viewModelScope.launch {
+            _electionsDisplayed.value = false
+            try {
+                _upcomingElectionsList.value = electionsRepository.getElections()
+            } catch (e: Exception) {
+                Log.d(TAG, e.printStackTrace().toString())
+            }
+
+        }
     }
 
     fun loadSavedElections() {
@@ -110,7 +100,6 @@ class ElectionsViewModel : ViewModel() {
     }
 
 
-
     //TODO: Create live data val for upcoming elections
 
     //TODO: Create live data val for saved elections
@@ -118,5 +107,38 @@ class ElectionsViewModel : ViewModel() {
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
 
     //TODO: Create functions to navigate to saved or upcoming election voter info
+
+    /**********/
+
+    /*fun loadUpcomingElections() {
+        val dataList = mutableListOf<Election>()
+
+        dataList.add(Election(1, "VIP Test Election", Date(), Division("id1", "US", "Washington")))
+        dataList.add(
+            Election(
+                2,
+                "Wisconsin Presidential Primary Election",
+                Date(),
+                Division("id2", "US", "Wisconsin")
+            )
+        )
+        dataList.add(
+            Election(
+                3,
+                "Michigan Consolidated Election",
+                Date(),
+                Division("id3", "US", "Michigan")
+            )
+        )
+        dataList.add(
+            Election(
+                4,
+                "DC State Primary Election",
+                Date(),
+                Division("id4", "US", "DC Columbia")
+            )
+        )
+        _upcomingElectionsList.value = dataList
+    }*/
 
 }
