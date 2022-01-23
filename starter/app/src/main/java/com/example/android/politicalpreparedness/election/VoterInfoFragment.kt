@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 
 class VoterInfoFragment : Fragment() {
@@ -26,13 +25,15 @@ class VoterInfoFragment : Fragment() {
     private val viewModel: VoterInfoViewModel by lazy {
         ViewModelProvider(
             this,
-            VoterInfoViewModelFactory(/*dataDao*/)
+            VoterInfoViewModelFactory(/*dataDao*/args.argElectionId, args.argElectionName)
         ).get(VoterInfoViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         binding = FragmentVoterInfoBinding.inflate(inflater)
 
@@ -51,7 +52,7 @@ class VoterInfoFragment : Fragment() {
         //TODO: Populate voter info -- hide views without provided data.
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
-        */
+         */
 
 
         //TODO: Handle loading of URLs
@@ -63,12 +64,6 @@ class VoterInfoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Load the reminders list on the ui
-
-        val electionId = args.argElectionId
-        val division = args.argDivision
-
-        viewModel.loadVoterInfo(electionId, division)
     }
 
     //TODO: Create method to load URL intents

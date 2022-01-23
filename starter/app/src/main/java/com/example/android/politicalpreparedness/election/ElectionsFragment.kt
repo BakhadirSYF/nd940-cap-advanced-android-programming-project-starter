@@ -102,7 +102,7 @@ class ElectionsFragment : Fragment() {
                 this.findNavController().navigate(
                     ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
                         it.id,
-                        it.division
+                        it.name
                     )
                 )
                 // Tell the ViewModel we've made the navigate call to prevent multiple navigation
