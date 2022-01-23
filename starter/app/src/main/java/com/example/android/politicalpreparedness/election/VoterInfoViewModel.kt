@@ -17,8 +17,10 @@ class VoterInfoViewModel(
     private val electionName: String
 ) : ViewModel() {
 
+    companion object {
+        const val TAG = "VoterInfoViewModel"
+    }
 
-    private val TAG = "VoterInfoViewModel"
     private var election: Election? = null
 
     // The internal MutableLiveData to store VoterInfoResponse
@@ -35,6 +37,13 @@ class VoterInfoViewModel(
     // The external immutable LiveData used for progress bar visibility via BindingsAdapters
     val voterInfoDisplayed: LiveData<Boolean>
         get() = _voterInfoDisplayed
+
+    // The internal MutableLiveData to store boolean value that represents election data saved state.
+    private val _savedState = MutableLiveData<Boolean>()
+
+    // The external immutable LiveData
+    val savedState: LiveData<Boolean>
+        get() = _savedState
 
     private val electionsRepository = ElectionsRepository(dataSource)
 
@@ -59,7 +68,11 @@ class VoterInfoViewModel(
 
     fun saveElectionToDatabase() {
         viewModelScope.launch {
-            electionsRepository.saveElection(election)
+            val insertId = electionsRepository.saveElection(election)
+
+            if (insertId.toInt() == election?.id) {
+                _savedState.value = true
+            }
         }
 
     }

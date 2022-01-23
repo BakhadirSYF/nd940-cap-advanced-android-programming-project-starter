@@ -20,3 +20,11 @@ fun bindUrlToTextView(textView: TextView, url: String?) {
         }
     }
 }
+
+@BindingAdapter("dataSavedState")
+fun bindSavedStateToTextView(textView: TextView, isSaved: Boolean) {
+    when (isSaved) {
+        true -> textView.setText(R.string.button_label_unfollow_election)
+        false -> textView.setText(R.string.button_label_follow_election)
+    }
+}

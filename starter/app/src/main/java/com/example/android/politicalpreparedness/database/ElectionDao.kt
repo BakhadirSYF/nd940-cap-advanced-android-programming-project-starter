@@ -1,16 +1,13 @@
 package com.example.android.politicalpreparedness.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.android.politicalpreparedness.network.models.Election
 
 @Dao
 interface ElectionDao {
 
-    @Insert
-    suspend fun insert(election: Election?)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(election: Election?): Long
 
     //TODO: Add select all election query
 

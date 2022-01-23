@@ -6,6 +6,7 @@
     <string name="header_label_upcoming_elections">Upcoming Elections</string>
     <string name="header_label_saved_elections">Saved Elections</string>
     <string name="button_label_follow_election">FOLLOW ELECTION</string>
+    <string name="button_label_unfollow_election">UNFOLLOW ELECTION</string>
 
     <!-- TODO: Add necessary string values -->
 

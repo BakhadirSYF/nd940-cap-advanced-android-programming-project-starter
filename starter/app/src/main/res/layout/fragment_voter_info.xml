@@ -102,10 +102,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/button_label_follow_election"
+            app:dataSavedState="@{viewModel.savedState}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/button_label_follow_election" />
         <!-- TODO: Add button to save election to Room -->
 
 
