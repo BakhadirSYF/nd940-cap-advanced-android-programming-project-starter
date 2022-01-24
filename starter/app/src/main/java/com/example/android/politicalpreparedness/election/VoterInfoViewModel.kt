@@ -6,11 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.models.*
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import kotlinx.coroutines.launch
-import java.util.*
 
 class VoterInfoViewModel(
     private val dataSource: ElectionDao, private val electionId: Int,
@@ -51,6 +49,11 @@ class VoterInfoViewModel(
      * init{} is called immediately after view model is created.
      */
     init {
+        getVoterInfoFromApi()
+        updateButtonState()
+    }
+
+    private fun getVoterInfoFromApi() {
         viewModelScope.launch {
             _voterInfoDisplayed.value = false
             try {
@@ -62,7 +65,15 @@ class VoterInfoViewModel(
             } catch (e: Exception) {
                 Log.d(TAG, e.printStackTrace().toString())
             }
+        }
+    }
 
+    private fun updateButtonState() {
+        viewModelScope.launch {
+            val election = electionsRepository.getElection(electionId)
+            Log.d(TAG, "electionId = ${election?.id}")
+
+            _savedState.value = election?.id == electionId
         }
     }
 

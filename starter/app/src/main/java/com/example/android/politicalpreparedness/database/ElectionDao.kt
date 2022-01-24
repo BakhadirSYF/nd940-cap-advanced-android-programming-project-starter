@@ -19,8 +19,13 @@ interface ElectionDao {
     @Query("SELECT * FROM election_table ORDER BY electionDay ASC")
     suspend fun getElections(): List<Election>?
 
-    //TODO: Add select single election query
-
+    /**
+     * Selects and returns the row that matches the supplied id, which is our key.
+     *
+     * @param id: id to match
+     */
+    @Query("SELECT * FROM election_table WHERE id = :id")
+    suspend fun getElection(id: Int): Election?
     //TODO: Add delete query
 
     //TODO: Add clear query
