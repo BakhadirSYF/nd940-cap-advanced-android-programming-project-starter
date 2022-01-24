@@ -48,7 +48,7 @@ class VoterInfoFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.followElectionButton.setOnClickListener {
-            viewModel.saveElectionToDatabase()
+            viewModel.updateElectionDataInDatabase()
         }
 
         return binding.root

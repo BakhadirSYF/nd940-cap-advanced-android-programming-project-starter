@@ -25,8 +25,14 @@ interface ElectionDao {
      * @param id: id to match
      */
     @Query("SELECT * FROM election_table WHERE id = :id")
-    suspend fun getElection(id: Int): Election?
-    //TODO: Add delete query
+    suspend fun get(id: Int): Election?
+
+    /**
+     * Deletes election data
+     */
+    @Delete
+    suspend fun delete(election: Election?)
+
 
     //TODO: Add clear query
 

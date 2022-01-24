@@ -26,7 +26,7 @@ class ElectionsRepository(private val database: ElectionDao) {
         )
     }
 
-    suspend fun saveElection(election: Election?): Long {
+    suspend fun save(election: Election?): Long {
         val insertId = database.insert(election)
         Log.d(TAG, "insertLong = $insertId")
         return insertId
@@ -36,8 +36,12 @@ class ElectionsRepository(private val database: ElectionDao) {
         return database.getElections()
     }
 
-    suspend fun getElection(id: Int): Election? {
-        return database.getElection(id)
+    suspend fun get(id: Int): Election? {
+        return database.get(id)
+    }
+
+    suspend fun remove(election: Election?) {
+        database.delete(election)
     }
 
 }
