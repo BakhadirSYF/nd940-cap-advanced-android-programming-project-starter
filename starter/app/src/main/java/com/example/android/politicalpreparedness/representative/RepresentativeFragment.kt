@@ -96,7 +96,11 @@ class RepresentativeFragment : Fragment() {
 
     private fun onSearchButtonCLick() {
         Log.d(TAG, "buttonSearch clicked")
-        viewModel.searchRepresentatives()
+
+        val address = Address(binding.addressLine1.text.toString(), binding.addressLine2.text.toString(),
+        binding.city.text.toString(), binding.state.selectedItem.toString(), binding.zip.text.toString())
+
+        viewModel.searchRepresentatives(address.toFormattedString())
     }
 
     override fun onRequestPermissionsResult(

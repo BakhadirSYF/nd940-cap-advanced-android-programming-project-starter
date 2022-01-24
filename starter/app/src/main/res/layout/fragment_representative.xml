@@ -146,17 +146,6 @@
             app:layout_constraintTop_toBottomOf="@+id/representative_title"
             tools:listitem="@layout/view_holder_representative" />
 
-        <!--<TextView
-            android:id="@+id/list_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/representative_title" />-->
-        <!--motion:visibilityMode="ignore" />-->
-
         <!--</androidx.constraintlayout.motion.widget.MotionLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

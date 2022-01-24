@@ -1,16 +1,20 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.android.politicalpreparedness.network.models.Division
-import com.example.android.politicalpreparedness.network.models.Election
-import com.example.android.politicalpreparedness.network.models.Office
-import com.example.android.politicalpreparedness.network.models.Official
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
-import java.util.*
+import kotlinx.coroutines.launch
 
-class RepresentativeViewModel: ViewModel() {
+class RepresentativeViewModel : ViewModel() {
+
+    companion object {
+        const val TAG = "RepresentativeViewModel"
+    }
+
     // The internal MutableLiveData that holds the data to be displayed on the UI
     private val _representativesList = MutableLiveData<List<Representative>>()
 
@@ -26,6 +30,8 @@ class RepresentativeViewModel: ViewModel() {
     val representativesDisplayed: LiveData<Boolean>
         get() = _representativesDisplayed
 
+    private val electionsRepository = ElectionsRepository(null)
+
     /**
      * After representatives list displayed to the user, set [_representativesDisplayed] to true
      */
@@ -33,20 +39,23 @@ class RepresentativeViewModel: ViewModel() {
         _representativesDisplayed.value = true
     }
 
-    fun searchRepresentatives() {
-        val dataList = mutableListOf<Representative>()
+    fun searchRepresentatives(address: String) {
+        viewModelScope.launch {
+            _representativesDisplayed.value = false
+            try {
+                val representativeResponse = electionsRepository.getRepresentatives(address)
 
-        val official = Official(name = "Official Name", party = "Democratic Party")
-        val division = Division("division_id", "division_country", "division_state")
-        val officials = mutableListOf<Int>()
-        officials.add(1)
-        officials.add(2)
-        val office = Office("Office Name", division, officials)
-        val representative = Representative(official, office)
-        dataList.add(representative)
+                _representativesList.value = representativeResponse.offices.flatMap { office ->
+                    office.getRepresentatives(representativeResponse.officials)
+                }
 
-        _representativesList.value = dataList
+            } catch (e: Exception) {
+                Log.d(TAG, e.printStackTrace().toString())
+            }
+
+        }
     }
+
 
     //TODO: Establish live data for representatives and address
 
@@ -66,5 +75,4 @@ class RepresentativeViewModel: ViewModel() {
     //TODO: Create function get address from geo location
 
     //TODO: Create function to get address from individual fields
-
 }

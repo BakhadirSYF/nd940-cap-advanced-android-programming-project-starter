@@ -87,7 +87,7 @@ class VoterInfoViewModel(
                 }
                 false -> {
                     val insertId = electionsRepository.save(election)
-                    if (insertId.toInt() == election?.id) {
+                    if (insertId?.toInt() == election?.id) {
                         _savedState.value = true
                     }
                 }

@@ -4,9 +4,10 @@ import android.util.Log
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 
-class ElectionsRepository(private val database: ElectionDao) {
+class ElectionsRepository(private val database: ElectionDao?) {
 
     companion object {
         const val TAG = "ElectionsRepository"
@@ -26,22 +27,26 @@ class ElectionsRepository(private val database: ElectionDao) {
         )
     }
 
-    suspend fun save(election: Election?): Long {
-        val insertId = database.insert(election)
+    suspend fun save(election: Election?): Long? {
+        val insertId = database?.insert(election)
         Log.d(TAG, "insertLong = $insertId")
         return insertId
     }
 
     suspend fun getSavedElections(): List<Election>? {
-        return database.getElections()
+        return database?.getElections()
     }
 
     suspend fun get(id: Int): Election? {
-        return database.get(id)
+        return database?.get(id)
     }
 
     suspend fun remove(election: Election?) {
-        database.delete(election)
+        database?.delete(election)
+    }
+
+    suspend fun getRepresentatives(address: String): RepresentativeResponse {
+        return CivicsApi.retrofitService.getRepresentatives(address)
     }
 
 }

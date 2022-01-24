@@ -14,7 +14,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
-    private val TAG = "ElectionsViewModel"
+
+    companion object {
+        const val TAG = "ElectionsViewModel"
+    }
 
     // The internal MutableLiveData that holds the data to be displayed on the UI
     private val _upcomingElectionsList = MutableLiveData<List<Election>>()
