@@ -53,7 +53,6 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
      */
     init {
         getElectionsFromApi()
-        loadSavedElections()
     }
 
     private fun getElectionsFromApi() {
@@ -68,7 +67,7 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
         }
     }
 
-    private fun loadSavedElections() {
+    fun loadSavedElections() {
         viewModelScope.launch {
             // TODO: create separate livedata boolean for saved election loading progress
 //            _electionsDisplayed.value = false
