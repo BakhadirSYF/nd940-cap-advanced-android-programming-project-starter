@@ -22,6 +22,7 @@ buildscript {
         version_dexMaker = '2.12.1'
         version_espresso = '3.2.0'
         version_logging_interceptor = "4.9.1"
+        version_glide = "4.8.0"
     }
 
     repositories {
