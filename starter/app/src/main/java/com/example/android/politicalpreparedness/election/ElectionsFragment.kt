@@ -126,10 +126,6 @@ class ElectionsFragment : Fragment() {
         //TODO: Populate recycler adapters
 
     }
-
     //TODO: Refresh adapters when fragment loads
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadSavedElections()
-    }
+
 }

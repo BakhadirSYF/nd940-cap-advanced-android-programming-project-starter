@@ -32,4 +32,8 @@ class ElectionsRepository(private val database: ElectionDao) {
         return insertId
     }
 
+    suspend fun getSavedElections(): List<Election>? {
+        return database.getElections()
+    }
+
 }

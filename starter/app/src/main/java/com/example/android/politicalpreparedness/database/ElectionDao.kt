@@ -6,10 +6,18 @@ import com.example.android.politicalpreparedness.network.models.Election
 @Dao
 interface ElectionDao {
 
+    /**
+     * Inserts election data
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(election: Election?): Long
 
-    //TODO: Add select all election query
+    /**
+     * Selects and returns all saved elections.
+     * Sorted by date
+     */
+    @Query("SELECT * FROM election_table ORDER BY electionDay ASC")
+    suspend fun getElections(): List<Election>?
 
     //TODO: Add select single election query
 

@@ -52,6 +52,11 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
      * init{} is called immediately after view model is created.
      */
     init {
+        getElectionsFromApi()
+        loadSavedElections()
+    }
+
+    private fun getElectionsFromApi() {
         viewModelScope.launch {
             _electionsDisplayed.value = false
             try {
@@ -63,19 +68,17 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
         }
     }
 
-    fun loadSavedElections() {
-        val dataList = mutableListOf<Election>()
+    private fun loadSavedElections() {
+        viewModelScope.launch {
+            // TODO: create separate livedata boolean for saved election loading progress
+//            _electionsDisplayed.value = false
+            try {
+                _savedElectionsList.value = electionsRepository.getSavedElections()
+            } catch (e: Exception) {
+                Log.d(TAG, e.printStackTrace().toString())
+            }
 
-        dataList.add(
-            Election(
-                2,
-                "Wisconsin Presidential Primary Election",
-                Date(),
-                Division("id2", "US", "Wisconsin")
-            )
-        )
-
-        _savedElectionsList.value = dataList
+        }
     }
 
     /**
@@ -109,38 +112,4 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
 
     //TODO: Create functions to navigate to saved or upcoming election voter info
-
-    /**********/
-
-    /*fun loadUpcomingElections() {
-        val dataList = mutableListOf<Election>()
-
-        dataList.add(Election(1, "VIP Test Election", Date(), Division("id1", "US", "Washington")))
-        dataList.add(
-            Election(
-                2,
-                "Wisconsin Presidential Primary Election",
-                Date(),
-                Division("id2", "US", "Wisconsin")
-            )
-        )
-        dataList.add(
-            Election(
-                3,
-                "Michigan Consolidated Election",
-                Date(),
-                Division("id3", "US", "Michigan")
-            )
-        )
-        dataList.add(
-            Election(
-                4,
-                "DC State Primary Election",
-                Date(),
-                Division("id4", "US", "DC Columbia")
-            )
-        )
-        _upcomingElectionsList.value = dataList
-    }*/
-
 }
