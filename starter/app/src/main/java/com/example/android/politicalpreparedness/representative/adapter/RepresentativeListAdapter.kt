@@ -80,8 +80,15 @@ class RepresentativeViewHolder(private val binding: ViewHolderRepresentativeBind
         binding.representative = item
         binding.representativePhoto.setImageResource(R.drawable.ic_profile)
 
-        //TODO: Show social links ** Hint: Use provided helper methods
-        //TODO: Show www link ** Hint: Use provided helper methods
+        val channels = item.official.channels
+        if(channels != null) {
+            showSocialLinks(channels)
+        }
+
+        val urls = item.official.urls
+        if(urls != null) {
+            showWWWLinks(urls)
+        }
 
         binding.executePendingBindings()
     }

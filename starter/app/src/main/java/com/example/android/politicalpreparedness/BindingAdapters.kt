@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.snackbar.Snackbar
 
 @BindingAdapter("externalUrl")
 fun bindUrlToTextView(textView: TextView, url: String?) {
@@ -18,9 +19,9 @@ fun bindUrlToTextView(textView: TextView, url: String?) {
         textView.visibility = View.GONE
     } else {
         textView.visibility = View.VISIBLE
-        textView.setOnClickListener {
+        textView.setOnClickListener { view ->
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(textView.context, browserIntent, null)
+            startActivity(view.context, browserIntent, null)
         }
     }
 }
