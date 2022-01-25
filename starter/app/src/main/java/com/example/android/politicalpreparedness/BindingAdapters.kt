@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.android.politicalpreparedness.representative.RepresentativeViewModel
 import com.example.android.politicalpreparedness.representative.RepresentativeViewModel.RepresentativeSearchState.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 
 @BindingAdapter("externalUrl")
 fun bindUrlToTextView(textView: TextView, url: String?) {
@@ -60,6 +62,7 @@ fun bindSearchStateToRecyclerView(
         LOADING_FAILURE -> {
             imageView.visibility = View.VISIBLE
             imageView.setImageResource(R.drawable.ic_connection_error)
+            Snackbar.make(imageView, imageView.context.getString(R.string.loading_failure_snack), LENGTH_SHORT).show()
         }
         else -> imageView.visibility = View.GONE
     }
