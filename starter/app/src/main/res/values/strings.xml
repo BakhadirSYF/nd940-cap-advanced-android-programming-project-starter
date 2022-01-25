@@ -7,6 +7,8 @@
     <string name="header_label_saved_elections">Saved Elections</string>
     <string name="button_label_follow_election">FOLLOW ELECTION</string>
     <string name="button_label_unfollow_election">UNFOLLOW ELECTION</string>
+    <string name="permission_denied_explanation">You need to grant location permission in order to use "Use My Location" feature.</string>
+    <string name="settings">Settings</string>
 
     <!-- TODO: Add necessary string values -->
 
