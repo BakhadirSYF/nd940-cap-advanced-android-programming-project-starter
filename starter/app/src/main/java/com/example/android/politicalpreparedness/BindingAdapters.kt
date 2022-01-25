@@ -9,9 +9,11 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.snackbar.Snackbar
+import com.example.android.politicalpreparedness.representative.RepresentativeViewModel
+import com.example.android.politicalpreparedness.representative.RepresentativeViewModel.RepresentativeSearchState.*
 
 @BindingAdapter("externalUrl")
 fun bindUrlToTextView(textView: TextView, url: String?) {
@@ -31,6 +33,29 @@ fun bindSavedStateToTextView(textView: TextView, isSaved: Boolean) {
     when (isSaved) {
         true -> textView.setText(R.string.button_label_unfollow_election)
         false -> textView.setText(R.string.button_label_follow_election)
+    }
+}
+
+@BindingAdapter("recyclerViewVisibilityState")
+fun bindSearchStateToRecyclerView(
+    recyclerView: RecyclerView,
+    searchState: RepresentativeViewModel.RepresentativeSearchState
+) {
+    when (searchState) {
+        LOADING_SUCCESS -> recyclerView.visibility = View.VISIBLE
+        LOADING_ACTIVE -> recyclerView.visibility = View.VISIBLE
+        else -> recyclerView.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("textViewVisibilityState")
+fun bindSearchStateToTextView(
+    textView: TextView,
+    searchState: RepresentativeViewModel.RepresentativeSearchState
+) {
+    when (searchState) {
+        INITIAL -> textView.visibility = View.VISIBLE
+        else -> textView.visibility = View.INVISIBLE
     }
 }
 

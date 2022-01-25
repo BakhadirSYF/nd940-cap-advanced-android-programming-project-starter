@@ -8,11 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
+import com.example.android.politicalpreparedness.representative.RepresentativeViewModel.RepresentativeSearchState.*
 
 class RepresentativeViewModel : ViewModel() {
 
     companion object {
         const val TAG = "RepresentativeViewModel"
+    }
+
+    enum class RepresentativeSearchState {
+        INITIAL, LOADING_ACTIVE, LOADING_SUCCESS, LOADING_FAILURE
     }
 
     // The internal MutableLiveData that holds the data to be displayed on the UI
@@ -30,7 +35,19 @@ class RepresentativeViewModel : ViewModel() {
     val representativesDisplayed: LiveData<Boolean>
         get() = _representativesDisplayed
 
+    // The internal MutableLiveData to store state value that changes when user clicks on search button,
+    // and when API call is complete. Used for progress bar, text info and recycler view visibility
+    private val _currentSearchState = MutableLiveData<RepresentativeSearchState>()
+
+    // The external immutable LiveData
+    val currentSearchState: LiveData<RepresentativeSearchState>
+        get() = _currentSearchState
+
     private val electionsRepository = ElectionsRepository(null)
+
+    init {
+        _currentSearchState.value = INITIAL
+    }
 
     /**
      * After representatives list displayed to the user, set [_representativesDisplayed] to true
@@ -42,37 +59,18 @@ class RepresentativeViewModel : ViewModel() {
     fun searchRepresentatives(address: String) {
         viewModelScope.launch {
             _representativesDisplayed.value = false
+            _currentSearchState.value = LOADING_ACTIVE
             try {
                 val representativeResponse = electionsRepository.getRepresentatives(address)
-
                 _representativesList.value = representativeResponse.offices.flatMap { office ->
                     office.getRepresentatives(representativeResponse.officials)
                 }
-
+                _currentSearchState.value = LOADING_SUCCESS
             } catch (e: Exception) {
+                _currentSearchState.value = LOADING_FAILURE
                 Log.d(TAG, e.printStackTrace().toString())
             }
 
         }
     }
-
-
-    //TODO: Establish live data for representatives and address
-
-    //TODO: Create function to fetch representatives from API from a provided address
-
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
 }

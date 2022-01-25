@@ -21,7 +21,7 @@
 
         <Button
             android:id="@+id/upcomingElectionsButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -33,7 +33,7 @@
 
         <Button
             android:id="@+id/findRepButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
