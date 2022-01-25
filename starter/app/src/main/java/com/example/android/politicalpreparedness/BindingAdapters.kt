@@ -43,8 +43,25 @@ fun bindSearchStateToRecyclerView(
 ) {
     when (searchState) {
         LOADING_SUCCESS -> recyclerView.visibility = View.VISIBLE
-        LOADING_ACTIVE -> recyclerView.visibility = View.VISIBLE
         else -> recyclerView.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("progressVisibilityState")
+fun bindSearchStateToRecyclerView(
+    imageView: ImageView,
+    searchState: RepresentativeViewModel.RepresentativeSearchState
+) {
+    when (searchState) {
+        LOADING_ACTIVE -> {
+            imageView.visibility = View.VISIBLE
+            imageView.setImageResource(R.drawable.loading_animation)
+        }
+        LOADING_FAILURE -> {
+            imageView.visibility = View.VISIBLE
+            imageView.setImageResource(R.drawable.ic_connection_error)
+        }
+        else -> imageView.visibility = View.GONE
     }
 }
 
@@ -55,7 +72,7 @@ fun bindSearchStateToTextView(
 ) {
     when (searchState) {
         INITIAL -> textView.visibility = View.VISIBLE
-        else -> textView.visibility = View.INVISIBLE
+        else -> textView.visibility = View.GONE
     }
 }
 

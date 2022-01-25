@@ -46,7 +46,9 @@
                 app:customColorValue="@color/defaultTextColor" />
         </Constraint>
         <Constraint
-            android:id="@+id/empty_view"
+            android:id="@+id/userInstructions"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +56,15 @@
             app:visibilityMode="ignore" />
         <Constraint
             android:id="@+id/representativesRecyclerView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/representative_title"
+            app:visibilityMode="ignore" />
+        <Constraint
+            android:id="@+id/progress"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,10 +99,22 @@
                 app:customColorValue="@color/materialGrey50" />
         </Constraint>
         <Constraint
-            android:id="@+id/empty_view"
+            android:id="@+id/userInstructions"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/representative_title"
+            app:visibilityMode="ignore" />
+        <Constraint
+            android:id="@+id/progress"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/representative_title"
             app:visibilityMode="ignore" />
         <Constraint
             android:id="@+id/representativesRecyclerView"

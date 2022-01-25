@@ -127,17 +127,22 @@
             tools:listitem="@layout/view_holder_representative" />
 
         <TextView
-            android:id="@+id/empty_view"
+            android:id="@+id/userInstructions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginEnd="@dimen/margin_large"
             android:gravity="center"
             android:text="@string/user_instructions"
             android:textSize="16sp"
             android:textStyle="bold|italic"
             app:textViewVisibilityState="@{viewModel.currentSearchState}"
             tools:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/progress"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            app:progressVisibilityState="@{viewModel.currentSearchState}"
+            app:srcCompat="@drawable/loading_animation" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
