@@ -24,4 +24,5 @@
     <string name="header_label_correspondence_address">Correspondence Address</string>
     <string name="link_label_voting_locations">Voting Locations</string>
     <string name="link_label_ballot_information">Ballot Information</string>
+    <string name="no_network_snack_msg">No network connection</string>
 </resources>
