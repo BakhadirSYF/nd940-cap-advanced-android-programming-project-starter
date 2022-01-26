@@ -12,8 +12,8 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.android.politicalpreparedness.representative.RepresentativeViewModel
-import com.example.android.politicalpreparedness.representative.RepresentativeViewModel.RepresentativeSearchState.*
+import com.example.android.politicalpreparedness.utils.ProgressState
+import com.example.android.politicalpreparedness.utils.ProgressState.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 
@@ -41,7 +41,7 @@ fun bindSavedStateToTextView(textView: TextView, isSaved: Boolean) {
 @BindingAdapter("recyclerViewVisibilityState")
 fun bindSearchStateToRecyclerView(
     recyclerView: RecyclerView,
-    searchState: RepresentativeViewModel.RepresentativeSearchState
+    searchState: ProgressState
 ) {
     when (searchState) {
         LOADING_SUCCESS -> recyclerView.visibility = View.VISIBLE
@@ -52,7 +52,7 @@ fun bindSearchStateToRecyclerView(
 @BindingAdapter("progressVisibilityState")
 fun bindSearchStateToRecyclerView(
     imageView: ImageView,
-    searchState: RepresentativeViewModel.RepresentativeSearchState
+    searchState: ProgressState
 ) {
     when (searchState) {
         LOADING_ACTIVE -> {
@@ -62,7 +62,11 @@ fun bindSearchStateToRecyclerView(
         LOADING_FAILURE -> {
             imageView.visibility = View.VISIBLE
             imageView.setImageResource(R.drawable.ic_connection_error)
-            Snackbar.make(imageView, imageView.context.getString(R.string.loading_failure_snack), LENGTH_SHORT).show()
+            Snackbar.make(
+                imageView,
+                imageView.context.getString(R.string.loading_failure_snack),
+                LENGTH_SHORT
+            ).show()
         }
         else -> imageView.visibility = View.GONE
     }
@@ -71,7 +75,7 @@ fun bindSearchStateToRecyclerView(
 @BindingAdapter("textViewVisibilityState")
 fun bindSearchStateToTextView(
     textView: TextView,
-    searchState: RepresentativeViewModel.RepresentativeSearchState
+    searchState: ProgressState
 ) {
     when (searchState) {
         INITIAL -> textView.visibility = View.VISIBLE

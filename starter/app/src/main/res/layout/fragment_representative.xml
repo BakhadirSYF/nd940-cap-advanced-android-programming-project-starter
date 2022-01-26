@@ -139,8 +139,8 @@
 
         <ImageView
             android:id="@+id/progress"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="@dimen/progress_iv_dimen"
+            android:layout_height="@dimen/progress_iv_dimen"
             app:progressVisibilityState="@{viewModel.currentSearchState}"
             app:srcCompat="@drawable/loading_animation" />
 

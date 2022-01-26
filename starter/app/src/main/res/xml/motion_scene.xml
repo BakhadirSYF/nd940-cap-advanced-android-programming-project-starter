@@ -24,8 +24,8 @@
         <Constraint
             android:id="@id/address_form"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
             android:alpha="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +34,8 @@
             android:id="@id/representative_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_form">
             <CustomAttribute
@@ -63,8 +63,8 @@
             app:visibilityMode="ignore" />
         <Constraint
             android:id="@+id/progress"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="@dimen/progress_iv_dimen"
+            android:layout_height="@dimen/progress_iv_dimen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,8 +76,8 @@
         <Constraint
             android:id="@id/address_form"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
             android:alpha="0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,8 +109,8 @@
             app:visibilityMode="ignore" />
         <Constraint
             android:id="@+id/progress"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="@dimen/progress_iv_dimen"
+            android:layout_height="@dimen/progress_iv_dimen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

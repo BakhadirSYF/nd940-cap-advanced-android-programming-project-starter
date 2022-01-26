@@ -8,16 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
-import com.example.android.politicalpreparedness.representative.RepresentativeViewModel.RepresentativeSearchState.*
+import com.example.android.politicalpreparedness.utils.ProgressState
+import com.example.android.politicalpreparedness.utils.ProgressState.*
 
 class RepresentativeViewModel : ViewModel() {
 
     companion object {
         const val TAG = "RepresentativeViewModel"
-    }
-
-    enum class RepresentativeSearchState {
-        INITIAL, LOADING_ACTIVE, LOADING_SUCCESS, LOADING_FAILURE
     }
 
     // The internal MutableLiveData that holds the data to be displayed on the UI
@@ -27,20 +24,12 @@ class RepresentativeViewModel : ViewModel() {
     val representativesList: LiveData<List<Representative>>
         get() = _representativesList
 
-    // The internal MutableLiveData to store boolean value that changes when list of representatives
-    // displayed to the user. Used for progress bar visibility
-    private val _representativesDisplayed = MutableLiveData<Boolean>()
-
-    // The external immutable LiveData used for progress bar visibility via BindingsAdapters
-    val representativesDisplayed: LiveData<Boolean>
-        get() = _representativesDisplayed
-
     // The internal MutableLiveData to store state value that changes when user clicks on search button,
     // and when API call is complete. Used for progress bar, text info and recycler view visibility
-    private val _currentSearchState = MutableLiveData<RepresentativeSearchState>()
+    private val _currentSearchState = MutableLiveData<ProgressState>()
 
     // The external immutable LiveData
-    val currentSearchState: LiveData<RepresentativeSearchState>
+    val currentSearchState: LiveData<ProgressState>
         get() = _currentSearchState
 
     private val electionsRepository = ElectionsRepository(null)
@@ -49,16 +38,8 @@ class RepresentativeViewModel : ViewModel() {
         _currentSearchState.value = INITIAL
     }
 
-    /**
-     * After representatives list displayed to the user, set [_representativesDisplayed] to true
-     */
-    fun displayRepresentativesListComplete() {
-        _representativesDisplayed.value = true
-    }
-
     fun searchRepresentatives(address: String) {
         viewModelScope.launch {
-            _representativesDisplayed.value = false
             _currentSearchState.value = LOADING_ACTIVE
             try {
                 val representativeResponse = electionsRepository.getRepresentatives(address)

@@ -64,7 +64,6 @@ class RepresentativeFragment : Fragment() {
             Observer<List<Representative>> { representativesList ->
                 representativesList?.apply {
                     representativeListAdapter?.representatives = representativesList
-                    viewModel.displayRepresentativesListComplete()
                 }
             })
 

@@ -53,7 +53,6 @@ class ElectionsFragment : Fragment() {
             Observer<List<Election>> { elections ->
                 elections?.apply {
                     upcomingElectionsAdapter?.elections = elections
-                    viewModel.displayElectionListComplete()
                 }
             })
 
@@ -62,8 +61,6 @@ class ElectionsFragment : Fragment() {
             Observer<List<Election>> { elections ->
                 elections?.apply {
                     savedElectionsAdapter?.elections = elections
-                    // TODO: might need extra boolean to separate upcoming and saved list loading
-                    viewModel.displayElectionListComplete()
                 }
             })
     }

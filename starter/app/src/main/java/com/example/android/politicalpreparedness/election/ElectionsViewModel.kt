@@ -6,12 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.database.ElectionDatabase
-import com.example.android.politicalpreparedness.network.models.Division
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
+import com.example.android.politicalpreparedness.utils.ProgressState
+import com.example.android.politicalpreparedness.utils.ProgressState.*
 import kotlinx.coroutines.launch
-import java.util.*
 
 class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
 
@@ -33,13 +32,13 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
     val savedElectionsList: LiveData<List<Election>>
         get() = _savedElectionsList
 
-    // The internal MutableLiveData to store boolean value that changes when list of elections
-    // displayed to the user. Used for progress bar visibility
-    private val _electionsDisplayed = MutableLiveData<Boolean>()
+    // The internal MutableLiveData to store state value that changes when API call is complete.
+    // Used for progress bar and recycler view visibility
+    private val _upcomingElectionsLoadingState = MutableLiveData<ProgressState>()
 
-    // The external immutable LiveData used for progress bar visibility via BindingsAdapters
-    val electionsDisplayed: LiveData<Boolean>
-        get() = _electionsDisplayed
+    // The external immutable LiveData
+    val upcomingElectionsLoadingState: LiveData<ProgressState>
+        get() = _upcomingElectionsLoadingState
 
     // The internal MutableLiveData to store election data and to handle navigation to the
     // selected election list item
@@ -60,10 +59,12 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
 
     private fun getElectionsFromApi() {
         viewModelScope.launch {
-            _electionsDisplayed.value = false
+            _upcomingElectionsLoadingState.value = LOADING_ACTIVE
             try {
                 _upcomingElectionsList.value = electionsRepository.getElections()
+                _upcomingElectionsLoadingState.value = LOADING_SUCCESS
             } catch (e: Exception) {
+                _upcomingElectionsLoadingState.value = LOADING_FAILURE
                 Log.d(TAG, e.printStackTrace().toString())
             }
 
@@ -84,14 +85,6 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
     }
 
     /**
-     * After elections list displayed to the user, set [_electionsDisplayed] to true
-     */
-    fun displayElectionListComplete() {
-        // TODO: need to use for ProgressBar
-        _electionsDisplayed.value = true
-    }
-
-    /**
      * When the Election list item clicked, set the [_navigateToVoterInfo] [MutableLiveData]
      * @param election The [Election] that was clicked on.
      */
@@ -105,13 +98,4 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
     fun displayVoterInfoComplete() {
         _navigateToVoterInfo.value = null
     }
-
-
-    //TODO: Create live data val for upcoming elections
-
-    //TODO: Create live data val for saved elections
-
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
-
-    //TODO: Create functions to navigate to saved or upcoming election voter info
 }
