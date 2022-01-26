@@ -63,7 +63,7 @@ class RepresentativeViewModel : ViewModel() {
         }
     }
 
-    fun fillInAddressForm(address: Address) {
+    fun fillInAddressForm(address: Address?) {
         _locationAddress.value = address
     }
 }

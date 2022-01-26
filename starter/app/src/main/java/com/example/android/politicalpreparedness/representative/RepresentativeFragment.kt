@@ -37,6 +37,7 @@ class RepresentativeFragment : Fragment() {
         const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
         const val LOCATION_PERMISSION_INDEX = 0
         const val MOTION_LAYOUT_STATE = "motion_layout_state"
+        const val ADDRESS_FORM_STATE = "address_form_state"
     }
 
     private lateinit var binding: FragmentRepresentativeBinding
@@ -74,6 +75,7 @@ class RepresentativeFragment : Fragment() {
 
         savedInstanceState?.run {
             binding.representativeMotionLayout.transitionState = this.getBundle(MOTION_LAYOUT_STATE)
+            viewModel.fillInAddressForm(getParcelable(ADDRESS_FORM_STATE))
         }
     }
 
@@ -179,16 +181,18 @@ class RepresentativeFragment : Fragment() {
 
     private fun onSearchButtonCLick() {
         hideKeyboard()
+        val address = getAddressFromForm()
+        viewModel.searchRepresentatives(address.toFormattedString())
+    }
 
-        val address = Address(
+    private fun getAddressFromForm(): Address {
+        return Address(
             binding.addressLine1.text.toString(),
             binding.addressLine2.text.toString(),
             binding.city.text.toString(),
             binding.state.selectedItem.toString(),
             binding.zip.text.toString()
         )
-
-        viewModel.searchRepresentatives(address.toFormattedString())
     }
 
     /*
@@ -233,6 +237,7 @@ class RepresentativeFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
             putBundle(MOTION_LAYOUT_STATE, binding.representativeMotionLayout.transitionState)
+            putParcelable(ADDRESS_FORM_STATE, getAddressFromForm())
         }
         super.onSaveInstanceState(outState)
     }
