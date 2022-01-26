@@ -128,12 +128,10 @@
 
         <TextView
             android:id="@+id/userInstructions"
+            style="@style/InfoTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/user_instructions"
-            android:textSize="16sp"
-            android:textStyle="bold|italic"
             app:textViewVisibilityState="@{viewModel.currentSearchState}"
             tools:visibility="gone" />
 

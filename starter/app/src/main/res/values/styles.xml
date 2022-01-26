@@ -20,6 +20,12 @@
         <item name="android:importantForAutofill">no</item>
     </style>
 
+    <style name="InfoTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
+
     <style name="ButtonStyle">
         <item name="android:textAllCaps">true</item>
         <item name="android:background">@color/colorPrimary</item>

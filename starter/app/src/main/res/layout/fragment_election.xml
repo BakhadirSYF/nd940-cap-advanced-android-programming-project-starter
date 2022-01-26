@@ -74,12 +74,26 @@
             android:id="@+id/savedElectionsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/savedElectionsHeader"
             tools:listitem="@layout/list_item_election" />
+
+        <TextView
+            android:id="@+id/noDataMsg"
+            style="@style/InfoTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data_saved"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/savedElectionsHeader"
+            app:textViewVisibilityState="@{viewModel.savedElectionsLoadingState}"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

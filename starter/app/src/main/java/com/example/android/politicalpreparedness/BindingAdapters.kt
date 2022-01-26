@@ -79,6 +79,7 @@ fun bindSearchStateToTextView(
 ) {
     when (searchState) {
         INITIAL -> textView.visibility = View.VISIBLE
+        LOADING_NO_DATA -> textView.visibility = View.VISIBLE
         else -> textView.visibility = View.GONE
     }
 }

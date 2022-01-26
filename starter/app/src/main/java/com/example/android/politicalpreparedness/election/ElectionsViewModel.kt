@@ -40,6 +40,14 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
     val upcomingElectionsLoadingState: LiveData<ProgressState>
         get() = _upcomingElectionsLoadingState
 
+    // The internal MutableLiveData to store state value that changes when data is fetched from local db.
+    // Used for progress bar, info text and recycler view visibility
+    private val _savedElectionsLoadingState = MutableLiveData<ProgressState>()
+
+    // The external immutable LiveData
+    val savedElectionsLoadingState: LiveData<ProgressState>
+        get() = _savedElectionsLoadingState
+
     // The internal MutableLiveData to store election data and to handle navigation to the
     // selected election list item
     private val _navigateToVoterInfo = MutableLiveData<Election>()
@@ -54,6 +62,7 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
      * init{} is called immediately after view model is created.
      */
     init {
+        _savedElectionsLoadingState.value = LOADING_NO_DATA
         getElectionsFromApi()
     }
 
@@ -73,11 +82,17 @@ class ElectionsViewModel(private val dataSource: ElectionDao) : ViewModel() {
 
     fun loadSavedElections() {
         viewModelScope.launch {
-            // TODO: create separate livedata boolean for saved election loading progress
-//            _electionsDisplayed.value = false
+            _savedElectionsLoadingState.value = LOADING_ACTIVE
             try {
-                _savedElectionsList.value = electionsRepository.getSavedElections()
+                val savedElections = electionsRepository.getSavedElections()
+                _savedElectionsList.value = savedElections
+                if (savedElections == null || savedElections.isEmpty()) {
+                    _savedElectionsLoadingState.value = LOADING_NO_DATA
+                } else {
+                    _savedElectionsLoadingState.value = LOADING_SUCCESS
+                }
             } catch (e: Exception) {
+                _upcomingElectionsLoadingState.value = LOADING_FAILURE
                 Log.d(TAG, e.printStackTrace().toString())
             }
 
