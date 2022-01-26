@@ -75,8 +75,6 @@ class VoterInfoViewModel(
     private fun updateButtonState() {
         viewModelScope.launch {
             val election = electionsRepository.get(electionId)
-            Log.d(TAG, "electionId = ${election?.id}")
-
             _savedState.value = election?.id == electionId
         }
     }

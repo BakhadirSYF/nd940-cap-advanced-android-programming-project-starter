@@ -32,8 +32,4 @@ interface ElectionDao {
      */
     @Delete
     suspend fun delete(election: Election?)
-
-
-    //TODO: Add clear query
-
 }

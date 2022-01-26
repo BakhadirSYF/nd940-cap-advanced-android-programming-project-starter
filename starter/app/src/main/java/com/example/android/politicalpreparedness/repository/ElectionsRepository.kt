@@ -29,7 +29,6 @@ class ElectionsRepository(private val database: ElectionDao?) {
 
     suspend fun save(election: Election?): Long? {
         val insertId = database?.insert(election)
-        Log.d(TAG, "insertLong = $insertId")
         return insertId
     }
 

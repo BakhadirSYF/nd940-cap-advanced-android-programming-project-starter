@@ -41,7 +41,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_address_line_1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_title" />
+                app:layout_constraintTop_toBottomOf="@id/search_title"
+                app:text="@{viewModel.locationAddress.line1}" />
 
             <EditText
                 android:id="@+id/address_line_2"
@@ -50,7 +51,8 @@
                 android:layout_height="0dp"
                 android:hint="@string/hint_address_line_2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_line_1" />
+                app:layout_constraintTop_toBottomOf="@id/address_line_1"
+                app:text="@{viewModel.locationAddress.line2}" />
 
             <EditText
                 android:id="@+id/city"
@@ -60,7 +62,8 @@
                 android:hint="@string/hint_city"
                 app:layout_constraintEnd_toStartOf="@id/state"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_line_2" />
+                app:layout_constraintTop_toBottomOf="@id/address_line_2"
+                app:text="@{viewModel.locationAddress.city}" />
 
             <Spinner
                 android:id="@+id/state"
@@ -71,7 +74,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/city"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/city"
-                app:layout_constraintTop_toTopOf="@id/city" />
+                app:layout_constraintTop_toTopOf="@id/city"
+                app:stateValue="@{viewModel.locationAddress.state}" />
 
             <EditText
                 android:id="@+id/zip"
@@ -83,7 +87,8 @@
                 android:maxLength="5"
                 app:layout_constraintEnd_toEndOf="@id/city"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/city"
+                app:text="@{viewModel.locationAddress.zip}" />
 
             <Button
                 android:id="@+id/button_search"

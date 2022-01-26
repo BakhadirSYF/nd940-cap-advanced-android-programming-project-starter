@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
 import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.launch
@@ -32,6 +33,13 @@ class RepresentativeViewModel : ViewModel() {
     val currentSearchState: LiveData<ProgressState>
         get() = _currentSearchState
 
+    // The internal MutableLiveData that holds the data to be displayed on the UI
+    private val _locationAddress = MutableLiveData<Address>()
+
+    // The external immutable LiveData
+    val locationAddress: LiveData<Address>
+        get() = _locationAddress
+
     private val electionsRepository = ElectionsRepository(null)
 
     init {
@@ -53,5 +61,9 @@ class RepresentativeViewModel : ViewModel() {
             }
 
         }
+    }
+
+    fun fillInAddressForm(address: Address) {
+        _locationAddress.value = address
     }
 }

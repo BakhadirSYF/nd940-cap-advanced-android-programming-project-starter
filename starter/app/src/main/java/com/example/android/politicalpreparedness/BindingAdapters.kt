@@ -1,14 +1,12 @@
 package com.example.android.politicalpreparedness
 
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.core.content.ContextCompat.startActivity
 import android.net.Uri
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
@@ -97,6 +95,22 @@ fun bindSearchStateToTextView(
     }
 }
 
+@BindingAdapter("stateValue")
+fun Spinner.setNewValue(value: String?) {
+    val adapter = toTypedAdapter<String>(this.adapter as ArrayAdapter<*>)
+    val position = when (adapter.getItem(0)) {
+        is String -> adapter.getPosition(value)
+        else -> this.selectedItemPosition
+    }
+    if (position >= 0) {
+        setSelection(position)
+    }
+}
+
+inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T>{
+    return adapter as ArrayAdapter<T>
+}
+
 /**
  * Use Glide library to load an image from url into an [ImageView]
  */
@@ -108,8 +122,8 @@ fun bindUrlToImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.ic_broken_image)
+                    .placeholder(R.drawable.ic_profile)
+                    .error(R.drawable.ic_profile)
                     .circleCrop()
             )
             .into(imgView)
