@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,6 +35,7 @@ class RepresentativeFragment : Fragment() {
         const val TAG = "RepresentativeFragment"
         const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
         const val LOCATION_PERMISSION_INDEX = 0
+        const val MOTION_LAYOUT_STATE = "motion_layout_state"
     }
 
     private lateinit var binding: FragmentRepresentativeBinding
@@ -66,6 +68,10 @@ class RepresentativeFragment : Fragment() {
             })
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        savedInstanceState?.run {
+            binding.representativeMotionLayout.transitionState = this.getBundle(MOTION_LAYOUT_STATE)
+        }
     }
 
     override fun onCreateView(
@@ -208,5 +214,12 @@ class RepresentativeFragment : Fragment() {
     private fun hideKeyboard() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putBundle(MOTION_LAYOUT_STATE, binding.representativeMotionLayout.transitionState)
+        }
+        super.onSaveInstanceState(outState)
     }
 }
