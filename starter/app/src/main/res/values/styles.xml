@@ -28,4 +28,10 @@
         <item name="android:textColor">@color/materialGrey50</item>
     </style>
 
+    <style name="LaunchButtonStyle" parent="ButtonStyle">
+        <item name="android:layout_marginStart">@dimen/margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+    </style>
+
 </resources>
