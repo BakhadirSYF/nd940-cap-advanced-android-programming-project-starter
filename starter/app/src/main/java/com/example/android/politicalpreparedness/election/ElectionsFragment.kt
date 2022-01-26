@@ -113,22 +113,11 @@ class ElectionsFragment : Fragment() {
             }
         })
 
-        setHasOptionsMenu(true)
         return binding.root
-
-        //TODO: Link elections to voter info
-
-        //TODO: Initiate recycler adapters
-
-        //TODO: Populate recycler adapters
-
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.loadSavedElections()
     }
-
-//TODO: Refresh adapters when fragment loads
-
 }

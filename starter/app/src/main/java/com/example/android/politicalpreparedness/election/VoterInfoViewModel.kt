@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.database.ElectionDao
 import com.example.android.politicalpreparedness.network.models.*
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
+import com.example.android.politicalpreparedness.utils.ProgressState
 import kotlinx.coroutines.launch
 
 class VoterInfoViewModel(
@@ -28,14 +29,6 @@ class VoterInfoViewModel(
     val voterInfoResponse: LiveData<VoterInfoResponse>
         get() = _voterInfoResponse
 
-    // The internal MutableLiveData to store boolean value that changes when voter info
-    // displayed to the user. Used for progress bar visibility
-    private val _voterInfoDisplayed = MutableLiveData<Boolean>()
-
-    // The external immutable LiveData used for progress bar visibility via BindingsAdapters
-    val voterInfoDisplayed: LiveData<Boolean>
-        get() = _voterInfoDisplayed
-
     // The internal MutableLiveData to store boolean value that represents election data saved state.
     private val _savedState = MutableLiveData<Boolean>()
 
@@ -43,26 +36,37 @@ class VoterInfoViewModel(
     val savedState: LiveData<Boolean>
         get() = _savedState
 
+    // The internal MutableLiveData to store state value that changes when API call is complete.
+    // Used for progress bar and recycler view visibility
+    private val _voterInfoLoadingState = MutableLiveData<ProgressState>()
+
+    // The external immutable LiveData
+    val voterInfoLoadingState: LiveData<ProgressState>
+        get() = _voterInfoLoadingState
+
     private val electionsRepository = ElectionsRepository(dataSource)
 
     /**
      * init{} is called immediately after view model is created.
      */
     init {
+        _voterInfoLoadingState.value = ProgressState.INITIAL
         getVoterInfoFromApi()
         updateButtonState()
     }
 
     private fun getVoterInfoFromApi() {
         viewModelScope.launch {
-            _voterInfoDisplayed.value = false
+            _voterInfoLoadingState.value = ProgressState.LOADING_ACTIVE
             try {
 
+                _voterInfoLoadingState.value = ProgressState.LOADING_SUCCESS
                 val voterInfoResponse = electionsRepository.getVoterInfo(electionId, electionName)
                 election = voterInfoResponse.election
 
                 _voterInfoResponse.value = voterInfoResponse
             } catch (e: Exception) {
+                _voterInfoLoadingState.value = ProgressState.LOADING_FAILURE
                 Log.d(TAG, e.printStackTrace().toString())
             }
         }
@@ -93,48 +97,5 @@ class VoterInfoViewModel(
                 }
             }
         }
-
     }
-
-
-    //TODO: Add live data to hold voter info
-
-    //TODO: Add var and methods to populate voter info
-
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
-
-
-    /************/
-    /*fun loadVoterInfo(electionId: Int, division: Division) {
-
-        // TODO: use electionId to get VoterInfo from API
-
-//        _voterInfoResponse.value = repository.getVoterInfo
-
-        val date = Date()
-        val divisionObj = Division("division_id", "division_country", "division_state")
-        val election =
-            Election(electionId, "Wisconsin Presidential Primary Election", date, divisionObj)
-
-        val stateList = mutableListOf<State>()
-        val administrationBody = AdministrationBody(
-            "administrationBody_name", "adminBody_electionInfoUrl",
-            "adminBody_votingLocationFinderUrl",
-            "adminBody_ballotInfoUrl", null)
-
-        stateList.add(State("state_name", administrationBody))
-
-        val voterInfoTmp = VoterInfoResponse(election, null, null, stateList, null)
-
-        _voterInfoResponse.value = voterInfoTmp
-
-
-    }*/
 }

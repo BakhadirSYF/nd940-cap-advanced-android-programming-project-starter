@@ -7,7 +7,9 @@ import android.net.Uri
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -39,7 +41,7 @@ fun bindSavedStateToTextView(textView: TextView, isSaved: Boolean) {
 }
 
 @BindingAdapter("recyclerViewVisibilityState")
-fun bindSearchStateToRecyclerView(
+fun bindSearchStateToImageView(
     recyclerView: RecyclerView,
     searchState: ProgressState
 ) {
@@ -49,8 +51,19 @@ fun bindSearchStateToRecyclerView(
     }
 }
 
+@BindingAdapter("constraintLayoutVisibilityState")
+fun bindSearchStateToConstraintLayout(
+    layout: ConstraintLayout,
+    searchState: ProgressState
+) {
+    when (searchState) {
+        LOADING_SUCCESS -> layout.visibility = View.VISIBLE
+        else -> layout.visibility = View.INVISIBLE
+    }
+}
+
 @BindingAdapter("progressVisibilityState")
-fun bindSearchStateToRecyclerView(
+fun bindSearchStateToImageView(
     imageView: ImageView,
     searchState: ProgressState
 ) {
