@@ -11,6 +11,7 @@ import android.location.Location
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -29,6 +30,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
+import com.example.android.politicalpreparedness.utils.ProgressState
 
 class RepresentativeFragment : Fragment() {
 
@@ -38,13 +41,17 @@ class RepresentativeFragment : Fragment() {
         const val LOCATION_PERMISSION_INDEX = 0
         const val MOTION_LAYOUT_STATE = "motion_layout_state"
         const val ADDRESS_FORM_STATE = "address_form_state"
+        const val RECYCLER_VIEW_STATE = "recycler_view_state"
+        const val SEARCH_PROGRESS_STATE = "search_progress_state"
+        const val RECYCLER_VIEW_DATA = "recycler_view_data"
     }
 
-    private lateinit var binding: FragmentRepresentativeBinding
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+    private var recyclerViewData: RepresentativeResponse? = null
+    private var searchState: ProgressState? = ProgressState.INITIAL
     private var connectivityManager: ConnectivityManager? = null
+    private var recyclerViewState: Parcelable? = null
+    private lateinit var binding: FragmentRepresentativeBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     /**
      * Lazily initialize [RepresentativeViewModel].
@@ -73,9 +80,26 @@ class RepresentativeFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        restoreSavedInstanceState(savedInstanceState)
+
+
+    }
+
+    private fun restoreSavedInstanceState(savedInstanceState: Bundle?) {
         savedInstanceState?.run {
             binding.representativeMotionLayout.transitionState = this.getBundle(MOTION_LAYOUT_STATE)
             viewModel.fillInAddressForm(getParcelable(ADDRESS_FORM_STATE))
+            recyclerViewState = this.getParcelable(RECYCLER_VIEW_STATE)
+            searchState = this.get(SEARCH_PROGRESS_STATE) as ProgressState
+            recyclerViewData = this.getParcelable(RECYCLER_VIEW_DATA)
+
+            viewModel.onRestoreRecyclerViewData(recyclerViewData)
+            viewModel.onRestoreSearchProgressState(searchState)
+            if (recyclerViewState != null) {
+                binding.representativesRecyclerView.layoutManager?.onRestoreInstanceState(
+                    recyclerViewState
+                )
+            }
         }
     }
 
@@ -117,7 +141,29 @@ class RepresentativeFragment : Fragment() {
             onLocationButtonCLick()
         }
 
+        viewModel.currentSearchState.observe(viewLifecycleOwner, Observer {
+            searchState = it
+        })
+
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putBundle(MOTION_LAYOUT_STATE, binding.representativeMotionLayout.transitionState)
+            putParcelable(ADDRESS_FORM_STATE, getAddressFromForm())
+
+            recyclerViewState =
+                binding.representativesRecyclerView.layoutManager?.onSaveInstanceState()
+            putParcelable(
+                RECYCLER_VIEW_STATE, recyclerViewState
+            )
+
+            putSerializable(SEARCH_PROGRESS_STATE, searchState)
+
+            putParcelable(RECYCLER_VIEW_DATA, viewModel.representativeResponse)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     /*
@@ -232,13 +278,5 @@ class RepresentativeFragment : Fragment() {
     private fun hideKeyboard() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.run {
-            putBundle(MOTION_LAYOUT_STATE, binding.representativeMotionLayout.transitionState)
-            putParcelable(ADDRESS_FORM_STATE, getAddressFromForm())
-        }
-        super.onSaveInstanceState(outState)
     }
 }
