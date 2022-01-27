@@ -19,7 +19,7 @@ class RepresentativeViewModel : ViewModel() {
         const val TAG = "RepresentativeViewModel"
     }
 
-    lateinit var representativeResponse: RepresentativeResponse
+    var representativeResponse: RepresentativeResponse? = null
 
     // The internal MutableLiveData that holds the data to be displayed on the UI
     private val _representativesList = MutableLiveData<List<Representative>>()
@@ -54,7 +54,7 @@ class RepresentativeViewModel : ViewModel() {
             _currentSearchState.value = LOADING_ACTIVE
             try {
                 representativeResponse = electionsRepository.getRepresentatives(address)
-                setRepList()
+                setRepresentativesList()
                 _currentSearchState.value = LOADING_SUCCESS
             } catch (e: Exception) {
                 _currentSearchState.value = LOADING_FAILURE
@@ -64,9 +64,11 @@ class RepresentativeViewModel : ViewModel() {
         }
     }
 
-    private fun setRepList() {
-        _representativesList.value = representativeResponse.offices.flatMap { office ->
-            office.getRepresentatives(representativeResponse.officials)
+    private fun setRepresentativesList() {
+        if (representativeResponse != null) {
+            _representativesList.value = representativeResponse!!.offices.flatMap { office ->
+                office.getRepresentatives(representativeResponse!!.officials)
+            }
         }
     }
 
@@ -81,7 +83,7 @@ class RepresentativeViewModel : ViewModel() {
     fun onRestoreRecyclerViewData(recyclerViewData: RepresentativeResponse?) {
         if (recyclerViewData != null) {
             representativeResponse = recyclerViewData
-            setRepList()
+            setRepresentativesList()
         }
     }
 }
